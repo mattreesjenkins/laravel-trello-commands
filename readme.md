@@ -2,13 +2,6 @@
 
 Artisan commands to manage Trello lists and cards.
 
-## Requirements
-
-``` json
-"php": "^8.1",
-"laravel/framework": "^10.10"
-````
-
 ## Installation
 
 Via Composer
@@ -17,7 +10,7 @@ Via Composer
 composer require --dev mattreesjenkins/laravel-trello-commands
 ```
 You will need a Trello Auth Token which you can get  [here](https://trello.com/power-ups/admin) and add it to your .env file.
-``` bash
+``` dotenv
 TRELLO_AUTH_TOKEN=xxx
 ```
 
@@ -31,11 +24,15 @@ php artisan migrate
 
 From the console enter:
 
-```php artisan todo```
+``` bash
+php artisan todo
+```
 
 To reset the current workspace, board, and list, enter:
 
-```php artisan todo --configure```
+``` bash
+php artisan todo --configure
+```
 
 ## Change log
 
@@ -43,7 +40,7 @@ Please see the [changelog](changelog.md) for more information on what has change
 
 ## Roadmap
 
-- Probably should write some tests :grimacing:
+- ~~Probably should write some tests~~ :grimacing:
 - Additional commands
 
 ## Credits
