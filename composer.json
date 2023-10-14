@@ -1,0 +1,30 @@
+{
+    "name": "mattreesjenkins/laravel-trello-commands",
+    "description": "Laravel Artisan commands for Trello",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matt Rees-Jenkins",
+            "email": "matt@rees-jenkins.co.uk",
+            "homepage": "http://rees-jenkins.co.uk"
+        }
+    ],
+    "homepage": "https://github.com/mattreesjenkins/laravel-trello-commands",
+    "keywords": ["Laravel", "Trello", "Atrisan", "Console", "Commands", "LaravelTrelloCommands"],
+    "autoload": {
+        "psr-4": {
+            "MattReesJenkins\\LaravelTrelloCommands\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "laravel/prompts": "^0.1.11"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MattReesJenkins\\LaravelTrelloCommands\\ServiceProvider"
+            ]
+        }
+    }
+}
