@@ -42,6 +42,8 @@ Please see the [changelog](changelog.md) for more information on what has change
 
 - ~~Probably should write some tests~~ :grimacing:
 - Additional commands
+- Models for Workspace, Lists, and Cards
+- More tests... :cold_sweat:
 
 ## Credits
 

@@ -388,6 +388,7 @@ class CreateTodo extends Command
             'change-list' => 'Change List',
             'change-board' => 'Change Board',
             'change-workspace' => 'Change Workspace',
+            'delete-card' => 'Delete Card',
             'exit' => $this->cyan('Exit'),
         ],
             default: 'Create Card'
@@ -407,6 +408,8 @@ class CreateTodo extends Command
             $this->config($this->conf['organisation']);
         } elseif ($choice === 'change-workspace') {
             $this->config();
+        } elseif ($choice === 'delete-card') {
+            $this->deleteCard();
         } elseif ($choice === 'exit') {
             $this->exit();
         }
@@ -416,7 +419,6 @@ class CreateTodo extends Command
         }
 
     }
-
 
     private function createCard()
     {
@@ -459,6 +461,10 @@ class CreateTodo extends Command
             ...$this->getCards($listId)->pluck('name', 'id'),
             'exit' => $this->cyan('Exit')
         ]);
+
+        if ($cardId === 'exit') {
+            $this->exit();
+        }
 
         $listId = select('Select Destination List...', $this->getLists()->pluck('name', 'id'));
 
@@ -537,6 +543,46 @@ class CreateTodo extends Command
                 return Arr::except($item, 'id');
             })
         );
+    }
+
+
+    private function deleteCard()
+    {
+        info("Workspace: {$this->conf['organisation']['name']} > Board: {$this->conf['board']['name']} > List: {$this->conf['list']['name']}");
+
+        $cards = $this->getCards($this->conf['list']['id']);
+
+        if ($cards->count()) {
+
+            $cardId = select('Select Card...', [
+                ...$cards->pluck('name', 'id'),
+                'change-list' => $this->cyan('Change List'),
+                'exit' => $this->cyan('Exit')
+            ]);
+
+            if ($cardId === 'exit') {
+                $this->exit();
+            } elseif ($cardId === 'change-list') {
+                $this->getList(true, false, true);
+                $this->deleteCard();
+            } else {
+                $response = Http::delete("https://api.trello.com/1/cards/{$cardId}", [
+                    'key' => $this->trello_api_key,
+                    'token' => config('laravel-trello-commands.trello_auth_token')
+                ]);
+                if ($response->status() === 200) {
+                    note('Card deleted');
+                } else {
+                    $this->handleResponseError($response);
+                }
+            }
+        } else {
+            info('This list does not contain any cards');
+            if (confirm('Select a different List?')) {
+                $this->getList(true, false, true);
+                $this->deleteCard();
+            }
+        }
     }
 
     private function exit(string $message = 'Exit', int $code = 0)
